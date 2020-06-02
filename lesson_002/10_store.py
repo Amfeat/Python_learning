@@ -50,6 +50,33 @@ print('Лампа -', lamps_quantity, 'шт, стоимость', lamps_cost, '�
 # Это задание на ручное вычисление - что бы потом понять как работают циклы и насколько с ними проще жить.
 
 # TODO здесь ваш код
+good = 'Стол'
+good_quantity = (store[goods[good]][0]['quantity'] + store[goods[good]][1]['quantity'])
+good_cost = (
+        store[goods[good]][0]['quantity'] * store[goods[good]][0]['price'] +
+        store[goods[good]][1]['quantity'] * store[goods[good]][1]['price']
+)
+print(good, '-', good_quantity, 'шт, стоимость', good_cost, 'руб')
+
+good = 'Диван'
+good_quantity = (store[goods[good]][0]['quantity'] + store[goods[good]][1]['quantity'])
+good_cost = (
+        store[goods[good]][0]['quantity'] * store[goods[good]][0]['price'] +
+        store[goods[good]][1]['quantity'] * store[goods[good]][1]['price']
+)
+print(good, '-', good_quantity, 'шт, стоимость', good_cost, 'руб')
+
+good = 'Стул'
+good_quantity = (
+        store[goods[good]][0]['quantity'] +
+        store[goods[good]][1]['quantity'] +
+        store[goods[good]][2]['quantity'])
+good_cost = (
+        store[goods[good]][0]['quantity'] * store[goods[good]][0]['price'] +
+        store[goods[good]][1]['quantity'] * store[goods[good]][0]['price'] +
+        store[goods[good]][2]['quantity'] * store[goods[good]][1]['price']
+)
+print(good, '-', good_quantity, 'шт, стоимость', good_cost, 'руб')
 
 ##########################################################################################
 # ВНИМАНИЕ! После того как __ВСЯ__ домашняя работа сделана и запушена на сервер,         #
