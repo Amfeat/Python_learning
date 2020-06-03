@@ -30,7 +30,7 @@ def full_gradient(color):
         channels[i] -= int(channel/3)
         if channels[i] < 0:
             channels[i] = 0
-    print(tuple(channels))
+
     return tuple(channels)
 
 
@@ -48,7 +48,7 @@ def full_gradient(color):
 
 # Нарисовать 100 пузырьков в произвольных местах экрана случайными цветами
 
-for _ in range(100):
+for _ in range(1000):
     x = random.randint(0, 1200)
     y = random.randint(0, 600)
     rand_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
