@@ -5,29 +5,30 @@ import simple_draw as sd
 
 sd.resolution = (1200, 600)
 sd.background_color = (21, 23, 60)
+detalization = 5
+bubble_width = 2
 
 
 # Нарисовать пузырек - три вложенных окружностей с шагом 5 пикселей
 
 # Написать функцию рисования пузырька, принммающую 2 (или более) параметра: точка рисовании и шаг
 
-def bubble(point, step, radius, color=(255, 255, 0), ):
+def bubble(point, step, radius, color=(255, 255, 0)):
     x, y = point
     center = sd.get_point(x, y)
 
-    for _ in range(3):
+    for _ in range(detalization):
         radius -= step
-        sd.circle(center, radius=radius, color=color, width=1)
+        sd.circle(center, radius=radius, color=color, width=bubble_width)
         color = full_gradient(color)
 
 
 def full_gradient(color):
     channels = list(color)
-    print(channels)
 
     for i, channel in enumerate(channels):
 
-        channels[i] -= int(channel/3)
+        channels[i] -= int(channel / detalization)
         if channels[i] < 0:
             channels[i] = 0
 
@@ -48,10 +49,10 @@ def full_gradient(color):
 
 # Нарисовать 100 пузырьков в произвольных местах экрана случайными цветами
 
-for _ in range(1000):
+for _ in range(100):
     x = random.randint(0, 1200)
     y = random.randint(0, 600)
     rand_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
     radius = random.randint(30, 50)
-    bubble((x, y), 5, radius, rand_color)
+    bubble((x, y), bubble_width, radius, rand_color)
 sd.pause()
