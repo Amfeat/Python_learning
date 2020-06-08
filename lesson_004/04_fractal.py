@@ -65,17 +65,18 @@ def draw_random_branches(start_point, angle, length):
     if width < 1:
         width = 1
     if length < 40:
-        color = sd.COLOR_DARK_GREEN
+        color = (66, 80, 0)
         if length < 9.5:
-            color = sd.COLOR_GREEN
+            color = (0, sd.random_number(150, 255), 0)
             width = 10
             if length < 9:
                 return
     v1 = sd.get_vector(start_point, angle, length, width=width)
     v1.draw(color)
-    for i in range(sd.random_number(1, 4)):
-        draw_random_branches(v1.end_point, angle - sd.random_number(-35, 35), length * sd.random_number(65, 75) / 100)
-    draw_random_branches(v1.end_point, angle + sd.random_number(-10, 10), length * sd.random_number(75, 90) / 100)
+    for i in range(sd.random_number(1, 2)):
+        draw_random_branches(v1.end_point, angle - sd.random_number(25, 40), length * sd.random_number(65, 75) / 100)
+        draw_random_branches(v1.end_point, angle + sd.random_number(25, 40), length * sd.random_number(65, 75) / 100)
+    draw_random_branches(v1.end_point, angle + sd.random_number(-15, 15), length * sd.random_number(75, 90) / 100)
 
 
 root_point = sd.get_point(600, 30)
