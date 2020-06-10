@@ -5,8 +5,9 @@
 # подсказка: для вывода элементов списка через запятую можно использовать функцию строки .join()
 # https://docs.python.org/3/library/stdtypes.html#str.join
 
-# TODO здесь ваш код
 
-
-
+from room_1 import folks as folks1
+from room_2 import folks as folks2
+folks1.extend(folks2)
+print('На районе живут', ', '.join(folks1))
 
