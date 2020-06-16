@@ -7,8 +7,36 @@ import simple_draw as sd
 #  - отработку изменений координат
 #  - отрисовку
 
+WIND = 0
+
 
 class Snowflake:
+    def __init__(self):
+        self.length = sd.random_number(10, 50)
+        self.x = sd.random_number(10, 600)
+        self.y = sd.random_number(10, 600)
+
+    def clear_previous_picture(self):
+        point = sd.get_point(self.x, self.y)
+        sd.snowflake(center=point, length=self.length, color=sd.background_color)
+        pass
+
+    def move(self):
+        self.x += WIND
+        self.y -= 10
+        pass
+
+    def draw(self):
+        point = sd.get_point(self.x, self.y)
+        sd.snowflake(center=point, length=self.length, color=sd.COLOR_WHITE)
+        pass
+
+    def can_fall(self):
+        if self.y <= 10:
+            return False
+        else:
+            return True
+
     pass
 
     # TODO здесь ваш код
