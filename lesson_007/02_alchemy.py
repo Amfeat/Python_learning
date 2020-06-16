@@ -14,46 +14,79 @@
 # Сложение элементов реализовывать через __add__
 # Если результат не определен - то возвращать None
 # Вывод элемента на консоль реализовывать через __str__
-#
-# Примеры преобразований:
-#   print(Water(), '+', Air(), '=', Water() + Air())
-#   print(Fire(), '+', Air(), '=', Fire() + Air())
+
 
 
 class Water:
     def __str__(self):
         return 'Вода'
 
+    def __eq__(self, other):
+        return self.__str__() == other.__str__()
+
     def __add__(self, other):
-        if other == Air:
+        if other == Air():
             return Storm()
+        elif other == Fire():
+            return Steam()
+        elif other == Ground():
+            return Dirt()
+        else:
+            return None
 
 
 class Air:
     def __str__(self):
         return 'Воздух'
 
+    def __eq__(self, other):
+        return self.__str__() == other.__str__()
+
     def __add__(self, other):
-        if other == Air:
-            return Stom()
+        if other == Water():
+            return Storm()
+        elif other == Fire():
+            return Lightning()
+        elif other == Ground():
+            return Dust()
+        else:
+            return None
 
 
 class Fire:
     def __str__(self):
         return 'Огонь'
 
+    def __eq__(self, other):
+        return self.__str__() == other.__str__()
+
     def __add__(self, other):
-        if other == Air:
-            return Stom()
+        if other == Air():
+            return Lightning()
+        elif other == Water():
+            return Steam()
+        elif other == Ground():
+            return Lava()
+        else:
+            return None
 
 
 class Ground:
     def __str__(self):
         return 'Земля'
 
+    def __eq__(self, other):
+        return self.__str__() == other.__str__()
+
     def __add__(self, other):
-        if other == Air:
-            return Stom()
+        if other == Air():
+            return Dust()
+        elif other == Water():
+            return Dirt()
+        elif other == Fire():
+            return Lava()
+        else:
+            return None
 
 
 class Storm:
@@ -61,8 +94,7 @@ class Storm:
         return 'Шторм'
 
     def __add__(self, other):
-        if other == Air:
-            return Stom()
+        return None
 
 
 class Steam:
@@ -70,8 +102,7 @@ class Steam:
         return 'Пар'
 
     def __add__(self, other):
-        if other == Air:
-            return Stom()
+        return None
 
 
 class Dirt:
@@ -79,8 +110,7 @@ class Dirt:
         return 'Грязь'
 
     def __add__(self, other):
-        if other == Air:
-            return Stom()
+        return None
 
 
 class Lightning:
@@ -88,8 +118,7 @@ class Lightning:
         return 'Молния'
 
     def __add__(self, other):
-        if other == Air:
-            return Stom()
+        return 3
 
 
 class Dust:
@@ -97,8 +126,7 @@ class Dust:
         return 'Пыль'
 
     def __add__(self, other):
-        if other == Air:
-            return Stom()
+        return None
 
 
 class Lava:
@@ -106,8 +134,12 @@ class Lava:
         return 'Лава'
 
     def __add__(self, other):
-        if other == Air:
-            return Stom()
+        return None
+
+
+print(Water(), '+', Air(), '=', Water() + Air())
+print(Fire(), '+', Air(), '=', Fire() + Air())
+
 
 # Усложненное задание (делать по желанию)
 # Добавить еще элемент в игру.
