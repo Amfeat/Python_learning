@@ -34,9 +34,9 @@ def move_flake():
 def get_fallen_flakes():
     fallen_list = []
     for i, flake in enumerate(flakes_list):
-        if flake[0] < -10 or flake[0] > 1210:
+        if flake[0] < -60 or flake[0] > 1260:
             fallen_list.append(i)
-        elif flake[1] < 50:
+        elif flake[1] < 10:
             fallen_list.append(i)
     return fallen_list
 

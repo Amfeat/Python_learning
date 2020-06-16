@@ -3,6 +3,7 @@
 import simple_draw as sd
 
 sd.resolution = (1200, 600)
+v = 1
 
 
 # 1) Написать функцию draw_branches, которая должна рисовать две ветви дерева из начальной точки
@@ -40,7 +41,6 @@ sd.resolution = (1200, 600)
 # можно поиграть -шрифтами- цветами и углами отклонения
 
 
-
 def draw_branches(start_point, angle, length):
     if length < 8:
         return
@@ -60,6 +60,9 @@ def draw_branches(start_point, angle, length):
 # Возможный результат решения см lesson_004/results/exercise_04_fractal_02.jpg
 
 def draw_random_branches(start_point, angle, length):
+    global v
+    v += 1
+    # print('vetki =', v)
     color = (125, 78, 8)
     width = int(length / 10)
     if width < 1:
@@ -67,8 +70,10 @@ def draw_random_branches(start_point, angle, length):
     if length < 40:
         color = (66, 80, 0)
         if length < 9.5:
-            color = (0, sd.random_number(150, 255), 0)
+            # color = (0, sd.random_number(150, 255), 0)
+            color = sd.random_color()
             width = 10
+
             if length < 9:
                 return
     v1 = sd.get_vector(start_point, angle, length, width=width)
@@ -86,8 +91,8 @@ root_point_2 = sd.get_point(800, 30)
 draw_random_branches(start_point=root_point, angle=90, length=100)
 # draw_branches(start_point=root_point_1, angle=90, length=80)
 # draw_random_branches(start_point=root_point, angle=90, length=80)
-
+#
 # Пригодятся функции
 # sd.random_number()
-
+print(v)
 sd.pause()
