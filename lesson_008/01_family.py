@@ -118,7 +118,7 @@ class Husband(Person):
             self.gaming()
         elif self.house.money <= self.house.MIN_MONEY:
             self.work()
-        elif dice > 4:
+        elif dice > 3:
             self.work()
         else:
             self.gaming()
@@ -141,6 +141,10 @@ class Husband(Person):
         cprint('{} весь день играл в WoT'.format(self.name), color='yellow')
 
         pass
+
+    def stat(self):
+        cprint('{} съел {} еды, заработал {} днег, играл в танки {} дней'.format(
+            self.name, self.total_food, self.total_money, self.total_gaming), on_color='on_cyan')
 
 
 class Wife(Person):
@@ -189,6 +193,9 @@ class Wife(Person):
         self.house.dirt = 0
         cprint('{} прибиалась в доме весь день'.format(self.name), color='green')
 
+    def stat(self):
+        cprint('{} села {} еды и купила {} шуб'.format(self.name, self.total_food, self.total_fur_coat), on_color='on_cyan')
+
 
 home = House()
 serge = Husband(name='Сережа', house=home)
@@ -203,6 +210,9 @@ for day in range(365):
     cprint(home, color='cyan')
 
 
+cprint('================== итоги ==================', color='red')
+masha.stat()
+serge.stat()
 # TODO после реализации первой части - отдать на проверку учителю
 
 ######################################################## Часть вторая
