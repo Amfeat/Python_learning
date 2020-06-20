@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from termcolor import cprint
-from random import randint
+from random import randint, choice
 
 ######################################################## Часть первая
 #
@@ -43,24 +43,80 @@ from random import randint
 
 
 class House:
+    MIN_MONEY = 100
 
     def __init__(self):
-        pass
+        self.money = 100
+        self.food = 50
+        self.dirt = 0
+
+    def __str__(self):
+        self.dirt += 5
+        return 'В доме: денег {},еды {}, грязи {}'.format(self.money, self.food, self.dirt)
 
 
-class Husband:
+class Person:
 
-    def __init__(self):
-        pass
+    min_fullness = 20
+    min_happiness = 30
 
+    def __init__(self, name, house):
+        self.name = name
+        self.fullness = 30
+        self.happiness = 100
+        self.house = house
+
+    def __str__(self):
+        return '{}: сытость {}, счастье {}'.format(self.name, self.fullness, self.happiness)
+
+    def eat(self):
+        if self.house.food >= 30:
+            self.fullness += 30
+            self.house.food -= 30
+
+    def alive(self):
+        if self.house.dirt > 90:
+            self.happiness -= 10
+        if self.fullness <= 0:
+            cprint('{} умер от голода.....RIP'.format(self.name), color='red', on_color='on_cyan')
+            return False
+        elif self.happiness <= 10:
+            cprint('{} умер от депрессии.....RIP'.format(self.name), color='red', on_color='on_cyan')
+            return False
+        else:
+            return True
+
+
+class Husband(Person):
+    #
+    # def __init__(self):
+    #     pass
+    #
     def __str__(self):
         return super().__str__()
 
     def act(self):
-        pass
+        if not self.alive():
+            return
+        # dice = randint(1, 2)
+        if self.fullness <= self.min_fullness:
+            self.eat()
+            return
+        elif self.happiness <= self.min_happiness:
+            self.gaming()
+        elif self.house.money <= self.house.MIN_MONEY:
+            self.work()
+        else:
+            choice(self.gaming(), self.eat(), self.work())
+        self.fullness -= 10
 
-    def eat(self):
+
+
+
         pass
+    #
+    # def eat(self):
+    #     pass
 
     def work(self):
         pass
@@ -69,19 +125,21 @@ class Husband:
         pass
 
 
-class Wife:
-
-    def __init__(self):
-        pass
-
+class Wife(Person):
+    #
+    # def __init__(self):
+    #     pass
+    #
     def __str__(self):
         return super().__str__()
 
     def act(self):
+        if not self.alive():
+            return
         pass
-
-    def eat(self):
-        pass
+    #
+    # def eat(self):
+    #     pass
 
     def shopping(self):
         pass
@@ -94,8 +152,8 @@ class Wife:
 
 
 home = House()
-serge = Husband(name='Сережа')
-masha = Wife(name='Маша')
+serge = Husband(name='Сережа', house=home)
+masha = Wife(name='Маша', house=home)
 
 for day in range(365):
     cprint('================== День {} =================='.format(day), color='red')
