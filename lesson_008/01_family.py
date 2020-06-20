@@ -73,6 +73,10 @@ class Person:
         if self.house.food >= 30:
             self.fullness += 30
             self.house.food -= 30
+        elif self.house.food > 0:
+            self.fullness += self.house.food
+            self.house.food = 0
+        cprint('{} поел!'.format(self.name))
 
     def alive(self):
         if self.house.dirt > 90:
@@ -98,8 +102,7 @@ class Husband(Person):
     def act(self):
         if not self.alive():
             return
-        # dice = randint(1, 2)
-        if self.fullness <= self.min_fullness:
+        if self.fullness <= self.min_fullness and self.house.food > 0:
             self.eat()
             return
         elif self.happiness <= self.min_happiness:
@@ -107,7 +110,7 @@ class Husband(Person):
         elif self.house.money <= self.house.MIN_MONEY:
             self.work()
         else:
-            choice(self.gaming(), self.eat(), self.work())
+            self.gaming()
         self.fullness -= 10
 
 
@@ -119,9 +122,13 @@ class Husband(Person):
     #     pass
 
     def work(self):
-        pass
+        self.house.money += 150
+        cprint('{} весь день работал'.format(self.name), color='green')
 
     def gaming(self):
+        self.happiness += 10
+        cprint('{} весь день играл в WoT'.format(self.name), color='yellow')
+
         pass
 
 
