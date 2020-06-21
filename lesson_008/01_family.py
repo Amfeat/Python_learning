@@ -52,10 +52,12 @@ class House:
         self.money = 100
         self.food = 50
         self.dirt = 0
+        self.cat_food = 30
 
     def __str__(self):
         self.dirt += 5
-        return 'В доме: денег {},еды {}, грязи {}'.format(self.money, self.food, self.dirt)
+        return 'В доме: денег {},еды {},кошачьей еды {}, грязи {}'.format(
+            self.money, self.food, self.cat_food, self.dirt)
 
 
 class Person:
@@ -82,6 +84,10 @@ class Person:
             self.total_food += self.house.food
             self.house.food = 0
         cprint('{} поел!'.format(self.name))
+
+    def pet_cat(self):
+        self.happiness += 5
+        cprint('{} гладит кота'.format(self.name), color='magenta')
 
     def alive(self):
         if self.house.dirt > 90:
@@ -118,8 +124,10 @@ class Husband(Person):
             self.gaming()
         elif self.house.money <= self.house.MIN_MONEY:
             self.work()
-        elif dice > 3:
+        elif dice > 4:
             self.work()
+        elif dice == 2:
+            self.pet_cat()
         else:
             self.gaming()
         self.fullness -= 10
@@ -167,15 +175,22 @@ class Wife(Person):
             self.shopping()
         elif self.house.dirt >= 80:
             self.clean_house()
+        elif self.house.cat_food <= 10 and self.house.money >=30:
+            self.buy_cat_food()
         elif self.house.money >= 500:
             self.buy_fur_coat()
         else:
-            self.clean_house()
+            self.pet_cat()
         self.fullness -= 10
 
     #
     # def eat(self):
     #     pass
+    def buy_cat_food(self):
+        cat_food_count = min(self.house.money, 30)
+        self.house.cat_food += cat_food_count
+        self.house.money -= cat_food_count
+        cprint('{} купила {} еды для кота'.format(self.name, cat_food_count), color='yellow')
 
     def shopping(self):
         available_food = min(self.house.money, self.house.MAX_FOOD)
@@ -226,19 +241,60 @@ class Child(Person):
         self.fullness -= 10
 
 
+class Cat:
+
+    def __init__(self, name):
+        self.name = name
+        self.fullness = 30
+        self.house = None
+
+    def __str__(self):
+        return 'Кот {} сытость {}'.format(self.name, self.fullness)
+
+    def act(self):
+        if self.fullness < 0:
+            cprint('Кот {} умер ...'.format(self.name), color='red')
+        dice = randint(1, 6)
+        if self.fullness < 20 and self.house.cat_food > 0:
+            self.eat()
+        elif dice > 4:
+            self.soil()
+            self.fullness -= 10
+        else:
+            self.sleep()
+            self.fullness -= 10
+
+    def eat(self):
+        food = min(self.house.cat_food, 10)
+        self.house.cat_food -= food
+        self.fullness += food * 2
+        cprint('Кот {} съел {} вискаса'.format(self.name, food), color='yellow')
+
+    def sleep(self):
+        cprint('Кот {} спал весь день'.format(self.name), color='green')
+
+    def soil(self):
+        self.house.dirt += 5
+        cprint('Кот {} драл обои весь день'.format(self.name), color='magenta')
+
+
 home = House()
 serge = Husband(name='Сережа', house=home)
 masha = Wife(name='Маша', house=home)
 kolya = Child(name='Коля', house=home)
+murzik = Cat(name='Мурзик')
+murzik.house = home
 
 for day in range(365):
     cprint('================== День {} =================='.format(day), color='red')
     serge.act()
     masha.act()
     kolya.act()
+    murzik.act()
     cprint(serge, color='cyan')
     cprint(masha, color='cyan')
     cprint(kolya, color='cyan')
+    cprint(murzik, color='cyan')
     cprint(home, color='cyan')
 
 cprint('================== итоги ==================', color='red')
@@ -250,6 +306,24 @@ serge.stat()
 # после подтверждения учителем второй части (обоих веток)
 # влить в мастер все коммиты из ветки develop и разрешить все конфликты
 # отправить на проверку учителем.
+
+
+# home = House()
+# serge = Husband(name='Сережа')
+# masha = Wife(name='Маша')
+# kolya = Child(name='Коля')
+# murzik = Cat(name='Мурзик')
+
+# for day in range(365):
+#     cprint('================== День {} =================='.format(day), color='red')
+#     serge.act()
+#     masha.act()
+#     kolya.act()
+#     murzik.act()
+#     cprint(serge, color='cyan')
+#     cprint(masha, color='cyan')
+#     cprint(kolya, color='cyan')
+#     cprint(murzik, color='cyan')
 
 # Усложненное задание (делать по желанию)
 #
