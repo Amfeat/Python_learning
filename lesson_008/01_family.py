@@ -194,71 +194,58 @@ class Wife(Person):
         cprint('{} прибиалась в доме весь день'.format(self.name), color='green')
 
     def stat(self):
-        cprint('{} села {} еды и купила {} шуб'.format(self.name, self.total_food, self.total_fur_coat), on_color='on_cyan')
+        cprint('{} села {} еды и купила {} шуб'.format(self.name, self.total_food, self.total_fur_coat),
+               on_color='on_cyan')
+
+
+class Child(Person):
+
+    # def __init__(self):
+    #     pass
+
+    def __str__(self):
+        return super().__str__()
+
+    def act(self):
+        if self.fullness < 0:
+            cprint('{} умер....'.format(self.name), color='red')
+            return
+        if self.fullness <= 20 and self.house.food > 0:
+            self.eat()
+        else:
+            self.sleep()
+        pass
+
+    def eat(self):
+        self.fullness += min(self.house.food, 10)
+        self.house.food -= min(self.house.food, 10)
+        cprint('{} поел!'.format(self.name), color='yellow')
+
+    def sleep(self):
+        cprint('{} поспал!'.format(self.name), color='blue')
+        self.fullness -= 10
 
 
 home = House()
 serge = Husband(name='Сережа', house=home)
 masha = Wife(name='Маша', house=home)
+kolya = Child(name='Коля', house=home)
 
 for day in range(365):
     cprint('================== День {} =================='.format(day), color='red')
     serge.act()
     masha.act()
+    kolya.act()
     cprint(serge, color='cyan')
     cprint(masha, color='cyan')
+    cprint(kolya, color='cyan')
     cprint(home, color='cyan')
-
 
 cprint('================== итоги ==================', color='red')
 masha.stat()
 serge.stat()
-# TODO после реализации первой части - отдать на проверку учителю
-
-######################################################## Часть вторая
-#
-# После подтверждения учителем первой части надо
-# отщепить ветку develop и в ней начать добавлять котов в модель семьи
-#
-# Кот может:
-#   есть,
-#   спать,
-#   драть обои
-#
-# Люди могут:
-#   гладить кота (растет степень счастья на 5 пунктов)
-#
-# В доме добавляется:
-#   еда для кота (в начале - 30)
-#
-# У кота есть имя и степень сытости (в начале - 30)
-# Любое действие кота, кроме "есть", приводит к уменьшению степени сытости на 10 пунктов
-# Еда для кота покупается за деньги: за 10 денег 10 еды.
-# Кушает кот максимум по 10 единиц еды, степень сытости растет на 2 пункта за 1 пункт еды.
-# Степень сытости не должна падать ниже 0, иначе кот умрет от голода.
-#
-# Если кот дерет обои, то грязи становится больше на 5 пунктов
 
 
-class Cat:
-
-    def __init__(self):
-        pass
-
-    def act(self):
-        pass
-
-    def eat(self):
-        pass
-
-    def sleep(self):
-        pass
-
-    def soil(self):
-        pass
-
-
-######################################################## Часть вторая бис
 #
 # После реализации первой части надо в ветке мастер продолжить работу над семьей - добавить ребенка
 #
@@ -268,23 +255,31 @@ class Cat:
 #
 # отличия от взрослых - кушает максимум 10 единиц еды,
 # степень счастья  - не меняется, всегда ==100 ;)
+class Child(Person):
 
-class Child:
-
-    def __init__(self):
-        pass
+    # def __init__(self):
+    #     pass
 
     def __str__(self):
         return super().__str__()
 
     def act(self):
+        if self.fullness < 0:
+            cprint('{} умер....'.format(self.name), color='red')
+            return
+        if self.fullness <= 20 and self.house.food > 0:
+            self.eat()
+        else:
+            self.sleep()
         pass
 
     def eat(self):
-        pass
+        self.fullness += min(self.house.food, 10)
+        self.house.food -= min(self.house.food, 10)
+        cprint('{} поел!'.format(self.name), color='yellow')
 
     def sleep(self):
-        pass
+        cprint('{} поспал!'.format(self.name), color='blue')
 
 
 # TODO после реализации второй части - отдать на проверку учителем две ветки
@@ -296,23 +291,23 @@ class Child:
 # влить в мастер все коммиты из ветки develop и разрешить все конфликты
 # отправить на проверку учителем.
 
-
-home = House()
-serge = Husband(name='Сережа')
-masha = Wife(name='Маша')
-kolya = Child(name='Коля')
-murzik = Cat(name='Мурзик')
-
-for day in range(365):
-    cprint('================== День {} =================='.format(day), color='red')
-    serge.act()
-    masha.act()
-    kolya.act()
-    murzik.act()
-    cprint(serge, color='cyan')
-    cprint(masha, color='cyan')
-    cprint(kolya, color='cyan')
-    cprint(murzik, color='cyan')
+#
+# home = House()
+# serge = Husband(name='Сережа')
+# masha = Wife(name='Маша')
+# kolya = Child(name='Коля')
+# murzik = Cat(name='Мурзик')
+#
+# for day in range(365):
+#     cprint('================== День {} =================='.format(day), color='red')
+#     serge.act()
+#     masha.act()
+#     kolya.act()
+#     murzik.act()
+#     cprint(serge, color='cyan')
+#     cprint(masha, color='cyan')
+#     cprint(kolya, color='cyan')
+#     cprint(murzik, color='cyan')
 
 # Усложненное задание (делать по желанию)
 #
