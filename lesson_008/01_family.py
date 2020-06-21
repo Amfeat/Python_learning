@@ -245,69 +245,11 @@ cprint('================== итоги ==================', color='red')
 masha.stat()
 serge.stat()
 
-
-#
-# После реализации первой части надо в ветке мастер продолжить работу над семьей - добавить ребенка
-#
-# Ребенок может:
-#   есть,
-#   спать,
-#
-# отличия от взрослых - кушает максимум 10 единиц еды,
-# степень счастья  - не меняется, всегда ==100 ;)
-class Child(Person):
-
-    # def __init__(self):
-    #     pass
-
-    def __str__(self):
-        return super().__str__()
-
-    def act(self):
-        if self.fullness < 0:
-            cprint('{} умер....'.format(self.name), color='red')
-            return
-        if self.fullness <= 20 and self.house.food > 0:
-            self.eat()
-        else:
-            self.sleep()
-        pass
-
-    def eat(self):
-        self.fullness += min(self.house.food, 10)
-        self.house.food -= min(self.house.food, 10)
-        cprint('{} поел!'.format(self.name), color='yellow')
-
-    def sleep(self):
-        cprint('{} поспал!'.format(self.name), color='blue')
-
-
-# TODO после реализации второй части - отдать на проверку учителем две ветки
-
-
 ######################################################## Часть третья
 #
 # после подтверждения учителем второй части (обоих веток)
 # влить в мастер все коммиты из ветки develop и разрешить все конфликты
 # отправить на проверку учителем.
-
-#
-# home = House()
-# serge = Husband(name='Сережа')
-# masha = Wife(name='Маша')
-# kolya = Child(name='Коля')
-# murzik = Cat(name='Мурзик')
-#
-# for day in range(365):
-#     cprint('================== День {} =================='.format(day), color='red')
-#     serge.act()
-#     masha.act()
-#     kolya.act()
-#     murzik.act()
-#     cprint(serge, color='cyan')
-#     cprint(masha, color='cyan')
-#     cprint(kolya, color='cyan')
-#     cprint(murzik, color='cyan')
 
 # Усложненное задание (делать по желанию)
 #
