@@ -21,12 +21,9 @@
 # Упорядочивание по частоте - по убыванию. Ширину таблицы подберите по своему вкусу
 # Требования к коду: он должен быть готовым к расширению функциональности. Делать сразу на классах.
 
-# TODO здесь ваш код
 import os
 import zipfile
 from pprint import pprint
-
-file_name = 'voyna-i-mir.txt'
 
 # z_file = zipfile.ZipFile(
 #     '/home/amfeat/PycharmProjects/Python_learning/lesson_009/python_snippets/voyna-i-mir.txt.zip', 'r'
@@ -34,36 +31,48 @@ file_name = 'voyna-i-mir.txt'
 # for filename in z_file.namelist():
 #     z_file.extract(filename)
 #     file_name = filename
-char_stat = {}
-with open(file_name, 'r', encoding='cp1251') as file:
-    lines_counter = 20
-    for line in file:
-        for char in line:
-            if not char.isalpha():
-                continue
-            if char in char_stat:
-                char_stat[char] += 1
-            else:
-                char_stat[char] = 1
+
+file_name = 'voyna-i-mir.txt'
 
 
-table = reversed(sorted(char_stat.items(), key=lambda i: i[1]))
+class SortCharTable:
 
+    def __init__(self, file_name):
+        self.file_name = file_name
+        self.char_stat = {}
 
-def print_table(items):
-    print('+' + '-' * 10 + '+' + '-' * 10 + '+')
-    print('|' + f'{"Буква": ^10}' + '|' + f'{"Частота": ^10}' + '|')
-    total = 0
-    for char, stat in items:
-        total += stat
+    def make_stat(self):
+        with open(self.file_name, 'r', encoding='cp1251') as file:
+            for line in file:
+                for char in line:
+                    if not char.isalpha():
+                        continue
+                    if char in self.char_stat:
+                        self.char_stat[char] += 1
+                    else:
+                        self.char_stat[char] = 1
+
+    def print_table(self):
+        table = self.sort_table()
         print('+' + '-' * 10 + '+' + '-' * 10 + '+')
-        print('|' + f'{char: ^10}' + '|' + f'{stat: ^10}' + '|')
-    print('+' + '-' * 10 + '+' + '-' * 10 + '+')
-    print('|' + f'{"ИТОГО:": ^10}' + '|' + f'{total: ^10}' + '|')
-    print('+' + '-' * 10 + '+' + '-' * 10 + '+')
+        print('|' + f'{"Буква": ^10}' + '|' + f'{"Частота": ^10}' + '|')
+        total = 0
+        for char, stat in table:
+            total += stat
+            print('+' + '-' * 10 + '+' + '-' * 10 + '+')
+            print('|' + f'{char: ^10}' + '|' + f'{stat: ^10}' + '|')
+        print('+' + '-' * 10 + '+' + '-' * 10 + '+')
+        print('|' + f'{"ИТОГО:": ^10}' + '|' + f'{total: ^10}' + '|')
+        print('+' + '-' * 10 + '+' + '-' * 10 + '+')
+
+    def sort_table(self):
+        return reversed(sorted(self.char_stat.items(), key=lambda i: i[1]))
 
 
-print_table(table)
+tolstoy = SortCharTable(file_name)
+tolstoy.make_stat()
+tolstoy.print_table()
+
 # После выполнения первого этапа нужно сделать упорядочивание статистики
 #  - по частоте по возрастанию
 #  - по алфавиту по возрастанию
