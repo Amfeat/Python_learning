@@ -34,16 +34,23 @@ file_name = 'voyna-i-mir.txt'
 # for filename in z_file.namelist():
 #     z_file.extract(filename)
 #     file_name = filename
-letter_stat = {}
+char_stat = {}
 with open(file_name, 'r', encoding='cp1251') as file:
     lines_counter = 20
     for line in file:
         lines_counter -= 1
         pprint(line)
+        for char in line:
+            if not char.isalpha():
+                continue
+            if char in char_stat:
+                char_stat[char] += 1
+            else:
+                char_stat[char] = 1
         if lines_counter == 0:
             break
 
-print(os.getcwd())
+pprint(char_stat)
 
 # После выполнения первого этапа нужно сделать упорядочивание статистики
 #  - по частоте по возрастанию
