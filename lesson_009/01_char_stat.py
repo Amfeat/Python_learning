@@ -38,8 +38,6 @@ char_stat = {}
 with open(file_name, 'r', encoding='cp1251') as file:
     lines_counter = 20
     for line in file:
-        lines_counter -= 1
-        pprint(line)
         for char in line:
             if not char.isalpha():
                 continue
@@ -47,11 +45,25 @@ with open(file_name, 'r', encoding='cp1251') as file:
                 char_stat[char] += 1
             else:
                 char_stat[char] = 1
-        if lines_counter == 0:
-            break
 
-pprint(char_stat)
 
+table = reversed(sorted(char_stat.items(), key=lambda i: i[1]))
+
+
+def print_table(items):
+    print('+' + '-' * 10 + '+' + '-' * 10 + '+')
+    print('|' + f'{"Буква": ^10}' + '|' + f'{"Частота": ^10}' + '|')
+    total = 0
+    for char, stat in items:
+        total += stat
+        print('+' + '-' * 10 + '+' + '-' * 10 + '+')
+        print('|' + f'{char: ^10}' + '|' + f'{stat: ^10}' + '|')
+    print('+' + '-' * 10 + '+' + '-' * 10 + '+')
+    print('|' + f'{"ИТОГО:": ^10}' + '|' + f'{total: ^10}' + '|')
+    print('+' + '-' * 10 + '+' + '-' * 10 + '+')
+
+
+print_table(table)
 # После выполнения первого этапа нужно сделать упорядочивание статистики
 #  - по частоте по возрастанию
 #  - по алфавиту по возрастанию
