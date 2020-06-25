@@ -21,9 +21,8 @@
 # Упорядочивание по частоте - по убыванию. Ширину таблицы подберите по своему вкусу
 # Требования к коду: он должен быть готовым к расширению функциональности. Делать сразу на классах.
 
-import os
-import zipfile
-from pprint import pprint
+# import os
+# import zipfile
 
 # z_file = zipfile.ZipFile(
 #     '/home/amfeat/PycharmProjects/Python_learning/lesson_009/python_snippets/voyna-i-mir.txt.zip', 'r'
@@ -52,8 +51,8 @@ class SortCharTable:
                     else:
                         self.char_stat[char] = 1
 
-    def print_table(self):
-        table = self.sort_table()
+    def print_table(self, sort_by='count', rev=True):
+        table = self.sort_table(sort_by, rev)
         print('+' + '-' * 10 + '+' + '-' * 10 + '+')
         print('|' + f'{"Буква": ^10}' + '|' + f'{"Частота": ^10}' + '|')
         total = 0
@@ -65,13 +64,17 @@ class SortCharTable:
         print('|' + f'{"ИТОГО:": ^10}' + '|' + f'{total: ^10}' + '|')
         print('+' + '-' * 10 + '+' + '-' * 10 + '+')
 
-    def sort_table(self):
-        return reversed(sorted(self.char_stat.items(), key=lambda i: i[1]))
+    def sort_table(self, sort_by='count', rev=True):
+        if sort_by == 'count':
+            if rev:
+                return reversed(sorted(self.char_stat.items(), key=lambda i: i[1]))
+            if not rev:
+                return sorted(self.char_stat.items(), key=lambda i: i[1])
 
 
 tolstoy = SortCharTable(file_name)
 tolstoy.make_stat()
-tolstoy.print_table()
+tolstoy.print_table(rev=False)
 
 # После выполнения первого этапа нужно сделать упорядочивание статистики
 #  - по частоте по возрастанию
