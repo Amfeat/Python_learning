@@ -22,6 +22,28 @@
 # Требования к коду: он должен быть готовым к расширению функциональности. Делать сразу на классах.
 
 # TODO здесь ваш код
+import os
+import zipfile
+from pprint import pprint
+
+file_name = 'voyna-i-mir.txt'
+
+# z_file = zipfile.ZipFile(
+#     '/home/amfeat/PycharmProjects/Python_learning/lesson_009/python_snippets/voyna-i-mir.txt.zip', 'r'
+# )
+# for filename in z_file.namelist():
+#     z_file.extract(filename)
+#     file_name = filename
+letter_stat = {}
+with open(file_name, 'r', encoding='cp1251') as file:
+    lines_counter = 20
+    for line in file:
+        lines_counter -= 1
+        pprint(line)
+        if lines_counter == 0:
+            break
+
+print(os.getcwd())
 
 # После выполнения первого этапа нужно сделать упорядочивание статистики
 #  - по частоте по возрастанию
