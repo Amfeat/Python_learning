@@ -39,6 +39,7 @@ class SortCharTable:
     def __init__(self, file_name):
         self.file_name = file_name
         self.char_stat = {}
+        self.table = []
 
     def make_stat(self):
         with open(self.file_name, 'r', encoding='cp1251') as file:
@@ -52,11 +53,10 @@ class SortCharTable:
                         self.char_stat[char] = 1
 
     def print_table(self, sort_by='count', rev=True):
-        table = self.sort_table(sort_by, rev)
         print('+' + '-' * 10 + '+' + '-' * 10 + '+')
         print('|' + f'{"Буква": ^10}' + '|' + f'{"Частота": ^10}' + '|')
         total = 0
-        for char, stat in table:
+        for char, stat in self.table:
             total += stat
             print('+' + '-' * 10 + '+' + '-' * 10 + '+')
             print('|' + f'{char: ^10}' + '|' + f'{stat: ^10}' + '|')
@@ -64,16 +64,22 @@ class SortCharTable:
         print('|' + f'{"ИТОГО:": ^10}' + '|' + f'{total: ^10}' + '|')
         print('+' + '-' * 10 + '+' + '-' * 10 + '+')
 
-    def sort_table(self, sort_by='count', rev=True):
-        if sort_by == 'count':
-            if rev:
-                return reversed(sorted(self.char_stat.items(), key=lambda i: i[1]))
-            if not rev:
-                return sorted(self.char_stat.items(), key=lambda i: i[1])
+    def sort_by_alf_dec(self):
+        self.table = reversed(sorted(self.char_stat.items(), key=lambda i: i[0]))
+
+    def sort_by_alf_inc(self):
+        self.table = sorted(self.char_stat.items(), key=lambda i: i[0])
+
+    def sort_by_freq_inc(self):
+        self.table = sorted(self.char_stat.items(), key=lambda i: i[1])
+
+    def sort_by_freq_dec(self):
+        self.table = reversed(sorted(self.char_stat.items(), key=lambda i: i[1]))
 
 
 tolstoy = SortCharTable(file_name)
 tolstoy.make_stat()
+tolstoy.sort_by_freq_inc()
 tolstoy.print_table(rev=False)
 
 # После выполнения первого этапа нужно сделать упорядочивание статистики
