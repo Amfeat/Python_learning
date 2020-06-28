@@ -44,14 +44,34 @@ def get_from_zip():
         return [file for file in z.namelist() if file[-1] != '/']
 
 
-def det_from_folder():
+def get_from_folder():
     files = []
     for dirpath, dirnames, filenames in os.walk('icons'):
         for file in filenames:
             full_file_path = os.path.join(dirpath, file)
             files.append(full_file_path)
-    return
-# TODO здесь ваш код
+    return files
+
+
+def get_time(file):
+    gm_time = os.path.getmtime(file)
+    date = time.gmtime(gm_time)
+    return date[0:3]
+
+
+file_list = get_from_folder()
+for file in file_list:
+    date = get_time(file)
+    path_to_copy = os.path.join(OUT_FOLDER, str(date[0]), f'{date[1]}', str(date[2]))
+    if not os.path.exists(path_to_copy):
+
+        os.makedirs(path_to_copy)
+
+    shutil.copy2(file, path_to_copy)
+
+
+
+
 
 # Усложненное задание (делать по желанию)
 # Нужно обрабатывать zip-файл, содержащий фотографии, без предварительного извлечения файлов в папку.
