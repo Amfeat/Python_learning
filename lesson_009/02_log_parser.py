@@ -25,10 +25,11 @@ import io
 f_name = 'events.txt'
 
 
-class GroupLog:
+class Parser:
 
-    def __init__(self, filename):
+    def __init__(self, filename, out_name):
         self.filename = filename
+        self.out_file = out_name
         self.prev_date = None
         self.file = None
         self.line = None
@@ -38,12 +39,12 @@ class GroupLog:
         file = open(self.filename)
         for line in file:
             self.line = line
-            date, status = self.get_lines()
+            date, status = self._get_lines()
             self.group_lines(date, status)
         self.group_lines("None", None)
         file.close()
 
-    def get_lines(self):
+    def _get_lines(self):
         date = self.line[:17] + ']'
         status = self.line[-4:-1]
         return date, status
@@ -67,15 +68,49 @@ class GroupLog:
         print(self.prev_date, self.nok_counter)
         out = self.prev_date + ' ' + str(self.nok_counter) + '\n'
 
-        with open('out.txt', mode='a') as file:
+        with open(self.out_file, mode='a') as file:
             file.write(out)
 
-    def get_params(self):
-        pass
+
+class MinuteParser(Parser):
+    def _get_lines(self):
+        date = self.line[:17] + ']'
+        status = self.line[-4:-1]
+        return date, status
 
 
-log = GroupLog(filename=f_name)
+class HourParser(Parser):
+    def _get_lines(self):
+        date = self.line[:14] + ']'
+        status = self.line[-4:-1]
+        return date, status
+
+
+class MonthParser(Parser):
+    def _get_lines(self):
+        date = self.line[:8] + ']'
+        status = self.line[-4:-1]
+        return date, status
+
+
+class YearParser(Parser):
+    def _get_lines(self):
+        date = self.line[:5] + ']'
+        status = self.line[-4:-1]
+        return date, status
+
+
+log = MinuteParser(f_name, 'out_minute.txt')
 log.do_it()
+
+h_log = HourParser(f_name, 'out_hour.txt')
+h_log.do_it()
+
+h_log = MonthParser(f_name, 'out_month.txt')
+h_log.do_it()
+
+y_log = YearParser(f_name, 'out_year.txt')
+y_log.do_it()
 # После выполнения первого этапа нужно сделать группировку событий
 #  - по часам
 #  - по месяцу
