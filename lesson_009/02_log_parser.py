@@ -20,7 +20,62 @@
 # Требования к коду: он должен быть готовым к расширению функциональности. Делать сразу на классах.
 
 # TODO здесь ваш код
+import io
 
+f_name = 'events.txt'
+
+
+class GroupLog:
+
+    def __init__(self, filename):
+        self.filename = filename
+        self.prev_date = None
+        self.file = None
+        self.line = None
+        self.nok_counter = 0
+
+    def do_it(self):
+        file = open(self.filename)
+        for line in file:
+            self.line = line
+            date, status = self.get_lines()
+            self.group_lines(date, status)
+        self.group_lines("None", None)
+        file.close()
+
+    def get_lines(self):
+        date = self.line[:17] + ']'
+        status = self.line[-4:-1]
+        return date, status
+
+    def group_lines(self, date, status):
+        if self.prev_date is None:
+            self.prev_date = date
+
+        if date == self.prev_date:
+            if status != ' OK':
+                self.nok_counter += 1
+        else:
+            if self.nok_counter > 0:
+                self.write_file()
+                self.nok_counter = 0
+            if status != ' OK':
+                self.nok_counter += 1
+            self.prev_date = date
+
+    def write_file(self):
+        print(self.prev_date, self.nok_counter)
+        out = self.prev_date + ' ' + str(self.nok_counter) + '\n'
+
+        with open('out.txt', mode='a') as file:
+            file.write(out)
+
+    def get_params(self):
+        pass
+
+
+log = GroupLog(filename=f_name)
+log.do_it()
 # После выполнения первого этапа нужно сделать группировку событий
 #  - по часам
 #  - по месяцу
