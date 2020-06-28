@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import os, time, shutil
+import os, time, shutil, zipfile
 
 # Нужно написать скрипт для упорядочивания фотографий (вообще любых файлов)
 # Скрипт должен разложить файлы из одной папки по годам и месяцам в другую.
@@ -34,6 +34,23 @@ import os, time, shutil
 # Чтение документации/гугла по функциям - приветствуется. Как и поиск альтернативных вариантов :)
 # Требования к коду: он должен быть готовым к расширению функциональности. Делать сразу на классах.
 
+from pprint import pprint
+
+OUT_FOLDER = 'icons_by_year'
+
+
+def get_from_zip():
+    with zipfile.ZipFile('icons.zip', 'r') as z:
+        return [file for file in z.namelist() if file[-1] != '/']
+
+
+def det_from_folder():
+    files = []
+    for dirpath, dirnames, filenames in os.walk('icons'):
+        for file in filenames:
+            full_file_path = os.path.join(dirpath, file)
+            files.append(full_file_path)
+    return
 # TODO здесь ваш код
 
 # Усложненное задание (делать по желанию)
