@@ -44,34 +44,49 @@ def get_from_zip():
         return [file for file in z.namelist() if file[-1] != '/']
 
 
-def get_from_folder():
+def get_from_folder(start_folder):
     files = []
-    for dirpath, dirnames, filenames in os.walk('icons'):
+    for dirpath, dirnames, filenames in os.walk(start_folder):
         for file in filenames:
             full_file_path = os.path.join(dirpath, file)
             files.append(full_file_path)
     return files
 
 
-def get_time(file):
-    gm_time = os.path.getmtime(file)
-    date = time.gmtime(gm_time)
-    return date[0:3]
+#########################################################################################
+class Sorter:
+
+    def __init__(self, start_folder, out_folder):
+        self.start_folder = start_folder
+
+        self.out_folder = out_folder
+        self.date = None
+        self.file = None
+        # self.file_list = None
+
+    def get_time(self, file):
+        gm_time = os.path.getmtime(file)
+        date = time.gmtime(gm_time)
+        return date[0:3]
+
+    def get_file_list(self):
+        self.file_list = get_from_folder(self.start_folder)
+
+        pass
+
+    def do_it(self):
+        self.get_file_list()
+        for file in self.file_list:
+            date = self.get_time(file)
+            path_to_copy = os.path.join(OUT_FOLDER, str(date[0]), f'{date[1]}', str(date[2]))
+            if not os.path.exists(path_to_copy):
+                os.makedirs(path_to_copy)
+            shutil.copy2(file, path_to_copy)
 
 
-file_list = get_from_folder()
-for file in file_list:
-    date = get_time(file)
-    path_to_copy = os.path.join(OUT_FOLDER, str(date[0]), f'{date[1]}', str(date[2]))
-    if not os.path.exists(path_to_copy):
+test = Sorter('icons', OUT_FOLDER)
 
-        os.makedirs(path_to_copy)
-
-    shutil.copy2(file, path_to_copy)
-
-
-
-
+test.do_it()
 
 # Усложненное задание (делать по желанию)
 # Нужно обрабатывать zip-файл, содержащий фотографии, без предварительного извлечения файлов в папку.
