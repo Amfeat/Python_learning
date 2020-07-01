@@ -64,27 +64,35 @@ class Sorter:
         self.file = None
         # self.file_list = None
 
-    def get_time(self, file):
-        gm_time = os.path.getmtime(file)
-        date = time.gmtime(gm_time)
-        return date[0:3]
+    def get_date(self):
+        gm_time = os.path.getmtime(self.file)
+        self.date = time.gmtime(gm_time)
 
     def get_file_list(self):
         self.file_list = get_from_folder(self.start_folder)
+        pass
+
+    def make_dir(self):
 
         pass
 
+    def
+
     def do_it(self):
         self.get_file_list()
-        for file in self.file_list:
-            date = self.get_time(file)
+        for self.file in self.file_list:
             path_to_copy = os.path.join(OUT_FOLDER, str(date[0]), f'{date[1]}', str(date[2]))
-            if not os.path.exists(path_to_copy):
-                os.makedirs(path_to_copy)
+
             shutil.copy2(file, path_to_copy)
 
 
-test = Sorter('icons', OUT_FOLDER)
+class ZipSorter(Sorter):
+
+    def get_file_list(self):
+        self.file_list = get_from_zip()
+
+
+test = ZipSorter('icons', OUT_FOLDER)
 
 test.do_it()
 
