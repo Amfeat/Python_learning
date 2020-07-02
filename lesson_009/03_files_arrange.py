@@ -39,21 +39,6 @@ from pprint import pprint
 OUT_FOLDER = 'icons_by_year'
 
 
-def get_from_zip():
-    with zipfile.ZipFile('icons.zip', 'r') as z:
-        return [file for file in z.namelist() if file[-1] != '/']
-
-
-def get_from_folder(start_folder):
-    files = []
-    for dirpath, dirnames, filenames in os.walk(start_folder):
-        for file in filenames:
-            full_file_path = os.path.join(dirpath, file)
-            files.append(full_file_path)
-    return files
-
-
-#########################################################################################
 class Sorter:
 
     def __init__(self, start_folder, out_folder):
@@ -63,23 +48,24 @@ class Sorter:
         self.date = None
         self.file = None
         self.path_to_copy = None
-        self.file_list = None
+        self.file_list = []
+
+    def close_file(self):
+        pass
 
     def get_date(self):
-        gm_time = os.path.getmtime(self.file)
-        self.date = time.gmtime(gm_time)
+        pass
 
     def get_file_list(self):
-        self.file_list = get_from_folder(self.start_folder)
         pass
 
     def make_dir(self):
-        self.path_to_copy = os.path.join(OUT_FOLDER, str(self.date[0]), f'{self.date[1]:0>2}', str(self.date[2]))
+        self.path_to_copy = os.path.join(OUT_FOLDER, str(self.date[0]), f'{self.date[1]:0>2}', f'{self.date[2]:0>2}')
         if not os.path.exists(self.path_to_copy):
             os.makedirs(self.path_to_copy)
 
     def copy_file(self):
-        shutil.copy2(self.file, self.path_to_copy)
+        pass
 
     def do_it(self):
         self.get_file_list()
@@ -87,28 +73,52 @@ class Sorter:
             self.get_date()
             self.make_dir()
             self.copy_file()
+        self.close_file()
 
 
 class ZipSorter(Sorter):
 
-    def get_file_list(self):
-        self.file_list = get_from_zip()
+    def __init__(self, start_folder, out_folder):
+        super().__init__(start_folder, out_folder)
+        self.z = zipfile.ZipFile(self.start_folder, 'r')
 
-    def copy_file(self):
-        with zipfile.ZipFile('icons.zip', 'r') as z:
-            z.extract(self.file, path=self.path_to_copy)
+    def get_file_list(self):
+        self.file_list = [file for file in self.z.namelist() if file[-1] != '/']
 
     def get_date(self):
-        with zipfile.ZipFile('icons.zip', 'r') as z:
-            self.date = z.getinfo(self.file).date_time
-            print(self.date)
-         #    gm_time = os.path.getmtime(self.file)
-         # time.gmtime(gm_time)
+        self.date = self.z.getinfo(self.file).date_time
+
+    def copy_file(self):
+        # print(self.path_to_copy)
+        zip_file = self.z.getinfo(self.file)
+        zip_file.filename = os.path.basename(zip_file.filename)
+        self.z.extract(zip_file, path=self.path_to_copy)
+
+    def close_file(self):
+        self.z.close()
 
 
-test = ZipSorter('icons', OUT_FOLDER)
+class FolderSorter(Sorter):
 
-test.do_it()
+    def get_file_list(self):
+        for dir_path, _, file_names in os.walk(self.start_folder):
+            for file in file_names:
+                full_file_path = os.path.join(dir_path, file)
+                self.file_list.append(full_file_path)
+
+    def get_date(self):
+        gm_time = os.path.getmtime(self.file)
+        self.date = time.gmtime(gm_time)
+
+    def copy_file(self):
+        shutil.copy2(self.file, self.path_to_copy)
+
+
+# test = ZipSorter('icons.zip', OUT_FOLDER)
+# test2 = FolderSorter('icons', OUT_FOLDER)
+#
+# test.do_it()
+# test2.do_it()
 
 # Усложненное задание (делать по желанию)
 # Нужно обрабатывать zip-файл, содержащий фотографии, без предварительного извлечения файлов в папку.
