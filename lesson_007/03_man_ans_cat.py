@@ -199,23 +199,27 @@ my_sweet_home = House()
 for citizen in citizens:
     citizen.go_to_the_house(house=my_sweet_home)
 
-for _ in range(6):
+for _ in range(5):
     i = choice([0, 1, 2])
     name = choice(cat_names)
     citizens[i].pick_cat(Cat(name))
 
-for day in range(1, 365):
-    print('================ день {} =================='.format(day))
-    for citizen in my_sweet_home.citizens:
-        citizen.act()
-    print('--- в конце дня ---')
-    for citizen in my_sweet_home.citizens:
-        print(citizen)
-    print(my_sweet_home)
 
-for citizen in my_sweet_home.citizens:
-    print(citizen.alive)
+def test_year():
+    for day in range(1, 365):
+        print('================ день {} =================='.format(day))
+        for citizen in my_sweet_home.citizens:
+            citizen.act()
+        print('--- в конце дня ---')
+        for citizen in my_sweet_home.citizens:
+            print(citizen)
+        print(my_sweet_home)
 
+    for citizen in my_sweet_home.citizens:
+        print(citizen.alive)
+
+
+test_year()
 # Усложненное задание (делать по желанию)
 # Создать несколько (2-3) котов и подселить их в дом к человеку.
 # Им всем вместе так же надо прожить 365 дней.
